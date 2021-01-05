@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from "react-router-dom";
+import "./App.css";
+
+import { User } from "./models/User";
+import { Pokedex } from "./components/pokedex/index";
+
+export const UserContext = React.createContext<any>(undefined);
 
 function App() {
+  const [user, changeUser] = useState<User>();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={user}>
+      <Router>
+        <Switch>
+          <Route path="/pokemons" component={Pokedex} />
+          <Redirect exact from="/" to="/pokemons" />
+          <Redirect to="/not-found" />
+        </Switch>
+      </Router>
+    </UserContext.Provider>
   );
 }
 
