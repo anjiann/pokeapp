@@ -8,7 +8,8 @@ import {
 import "./App.css";
 
 import { User } from "./models/User";
-import { Pokedex } from "./components/pokedex/index";
+import Pokedex from "./components/pokedex";
+import Navbar from "./components/navbar";
 
 export const UserContext = React.createContext<any>(undefined);
 
@@ -16,6 +17,7 @@ function App() {
   const [user, changeUser] = useState<User>();
   return (
     <UserContext.Provider value={user}>
+      <Navbar />
       <Router>
         <Switch>
           <Route path="/pokemons" component={Pokedex} />
