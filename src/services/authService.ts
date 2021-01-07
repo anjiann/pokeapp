@@ -1,11 +1,11 @@
 import jwtDecode from "jwt-decode";
-import http from "./httpService";
+import { dbApi } from "./httpService";
 
 const apiEndpoint = "/auth";
 const userKey = "user";
 
 export async function login(username: string, password: string) {
-  const { data } = await http.post(apiEndpoint, { username, password });
+  const { data } = await dbApi.post(apiEndpoint, { username, password });
   localStorage.setItem(userKey, data);
 }
 

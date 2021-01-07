@@ -1,4 +1,4 @@
-import http from "./httpService";
+import { pokeApi } from "./httpService";
 
 const apiEndpoint = "/pokemon";
 
@@ -7,9 +7,9 @@ function pokemonUrl(id: Number) {
 }
 
 export function getPokemons() {
-  return http.get(apiEndpoint);
+  return pokeApi.get(apiEndpoint);
 }
 
 export function getPokemon(id: Number) {
-  return http.get(pokemonUrl(id));
+  return pokeApi.get(pokemonUrl(id));
 }

@@ -20,9 +20,7 @@ axios.interceptors.response.use(
   }
 );
 
-export default {
-  get: axios.get,
-  post: axios.post,
-  put: axios.put,
-  delete: axios.delete,
-};
+export const dbApi = axios.create({ baseURL: process.env.REACT_APP_API_URL });
+export const pokeApi = axios.create({
+  baseURL: "https://pokeapi.co/api/v2",
+});
