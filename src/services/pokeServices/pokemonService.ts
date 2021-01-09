@@ -1,4 +1,4 @@
-import { pokeApi } from "./httpService";
+import { pokeApi } from "../httpService";
 
 const apiEndpoint = "/pokemon";
 

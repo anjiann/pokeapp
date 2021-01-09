@@ -12,6 +12,8 @@ import Pokedex from "./components/pokedex";
 import Navbar from "./components/navbarComponent/navbar";
 import { NotFound } from "./components/notFound";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+
 export const UserContext = React.createContext<any>(undefined);
 
 function App() {
