@@ -2,20 +2,24 @@ import React from "react";
 
 interface IVertListGroup {
   items: any[];
-  textProperty: string;
-  valueProperty: string;
+  textProperty?: string;
+  valueProperty?: string;
   selectedItem: any;
   onItemSelect: any;
+  isHorizontal?: boolean;
 }
-const VerticalListGroup = ({
+const ListGroup: React.FunctionComponent<IVertListGroup> = ({
   items,
-  textProperty,
-  valueProperty,
+  textProperty = "name",
+  valueProperty = "_id",
   selectedItem,
   onItemSelect,
-}: IVertListGroup) => {
+  isHorizontal = false,
+}) => {
   return (
-    <ul className="list-group">
+    <ul
+      className={"list-group" + (isHorizontal ? " list-group-horizontal" : "")}
+    >
       {items.map((item) => (
         <li
           onClick={() => onItemSelect(item)}
@@ -31,9 +35,4 @@ const VerticalListGroup = ({
   );
 };
 
-VerticalListGroup.defaultProps = {
-  textProperty: "name",
-  valueProperty: "_id",
-};
-
-export default VerticalListGroup;
+export default ListGroup;

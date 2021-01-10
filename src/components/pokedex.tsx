@@ -2,11 +2,12 @@ import React from "react";
 import SearchBar from "./searchbar";
 import PokemonsGrid from "./pokemonsGrid";
 import SideBar from "./sideBar";
-import VerticalListGroup from "./common/verticalListGroup";
+import ListGroup from "./common/listGroup";
 
 import { getGenerations } from "../services/pokeServices/generationService";
 class Pokedex extends React.Component<any, any> {
   state = {
+    categories: [{ name: "generation" }, { name: "version" }, { name: "type" }],
     filters: [],
     generations: [],
     versions: [],
@@ -14,6 +15,7 @@ class Pokedex extends React.Component<any, any> {
     currentPage: 1,
     pageSize: 4,
     searchQuery: "",
+    selectedCategory: null,
     selectedFilter: null,
     sortColumn: { path: "title", order: "asc" },
   };
@@ -21,13 +23,17 @@ class Pokedex extends React.Component<any, any> {
   async componentDidMount() {
     const data = await getGenerations();
     const generations = [{ _id: "", name: "All Generations" }, ...data];
-    console.log(data);
 
     this.setState({ generations });
+    this.setState({ filters: generations });
   }
 
-  handleFilterSelect = (genre: string) => {
-    this.setState({ selectedGenre: genre, searchQuery: "", currentPage: 1 });
+  handleCategorySelect = (category: string) => {
+    this.setState({ selectedCategory: category });
+  };
+
+  handleFilterSelect = (filter: string) => {
+    this.setState({ selectedFilter: filter, searchQuery: "", currentPage: 1 });
   };
 
   render() {
@@ -37,8 +43,16 @@ class Pokedex extends React.Component<any, any> {
           <SideBar />
         </div>
         <div className="col-3">
-          <VerticalListGroup
-            items={this.state.generations}
+          <ListGroup
+            items={this.state.categories}
+            selectedItem={this.state.selectedCategory}
+            onItemSelect={this.handleCategorySelect}
+            textProperty="name"
+            valueProperty="name"
+            isHorizontal={true}
+          />
+          <ListGroup
+            items={this.state.filters}
             selectedItem={this.state.selectedFilter}
             onItemSelect={this.handleFilterSelect}
           />
