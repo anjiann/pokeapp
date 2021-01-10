@@ -9,7 +9,7 @@ import "./App.css";
 
 import { User } from "./models/User";
 import Pokedex from "./components/pokedex";
-import Navbar from "./components/navbarComponent/navbar";
+import Navbar from "./components/navbar";
 import { NotFound } from "./components/notFound";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -20,12 +20,13 @@ function App() {
   const [user, changeUser] = useState<User>();
   return (
     <UserContext.Provider value={user}>
-     <Navbar/>
+      <Navbar />
       <Router>
         <Switch>
           <Route path="/pokemons" component={Pokedex} />
+          <Route path="/not-found" component={NotFound} />
           <Redirect exact from="/" to="/pokemons" />
-          <Redirect to="/not-found"/>
+          <Redirect to="/not-found" />
         </Switch>
       </Router>
     </UserContext.Provider>

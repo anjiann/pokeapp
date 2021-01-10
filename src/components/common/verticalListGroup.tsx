@@ -14,8 +14,6 @@ const VerticalListGroup = ({
   selectedItem,
   onItemSelect,
 }: IVertListGroup) => {
-  console.log("items ");
-  console.log(items);
   return (
     <ul className="list-group">
       {items.map((item) => (

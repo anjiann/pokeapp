@@ -34,6 +34,9 @@ class Pokedex extends React.Component<any, any> {
     return (
       <div className="row">
         <div className="col-3">
+          <SideBar />
+        </div>
+        <div className="col-3">
           <VerticalListGroup
             items={this.state.generations}
             selectedItem={this.state.selectedFilter}
@@ -42,7 +45,6 @@ class Pokedex extends React.Component<any, any> {
         </div>
         <div className="col">
           <SearchBar />
-          <SideBar />
           <PokemonsGrid />
         </div>
       </div>
