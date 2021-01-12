@@ -1,3 +1,4 @@
+
 import { User } from "../models/User";
 import { dbApi } from "./httpService";
 export class UserR {
@@ -15,3 +16,4 @@ export function register(user:UserR) {
     userLastname: user.userLastName,
   });
 }
+
