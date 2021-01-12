@@ -1,13 +1,19 @@
-import { dbApi } from "./httpService";
+
 import { User } from "../models/User";
-
-const apiEndpoint = "/users";
-
-export function register(user: User) {
+import { dbApi } from "./httpService";
+export class UserR {
+  userName: string;
+  userPassword: string;
+  userFirstName: string;
+  userLastName: string;
+}
+const apiEndpoint = "/user";
+export function register(user:UserR) {
   return dbApi.post(apiEndpoint, {
-    username: user.username,
-    password: user.password,
-    firstName: user.firstName,
-    lastName: user.lastName,
+    userName: user.userName,
+    userPassword: user.userPassword,
+    userFirstname: user.userFirstName,
+    userLastname: user.userLastName,
   });
 }
+
