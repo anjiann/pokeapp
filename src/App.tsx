@@ -13,6 +13,7 @@ import Navbar from "./components/navbar";
 import { NotFound } from "./components/notFound";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import ProtectedRoute from "./components/protectedRoute";
 
 export const UserContext = React.createContext<any>(undefined);
 
@@ -23,6 +24,16 @@ function App() {
       <Navbar />
       <Router>
         <Switch>
+          {/* <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <ProtectedRoute
+            path="users/:userId/favourites"
+            component={Favourites}
+          />
+          <ProtectedRoute
+            path="users/:userId/teams/:teamId"
+            component={Teams}
+          /> */}
           <Route path="/pokemons" component={Pokedex} />
           <Route path="/not-found" component={NotFound} />
           <Redirect exact from="/" to="/pokemons" />
