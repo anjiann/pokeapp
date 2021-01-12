@@ -5,9 +5,11 @@ import SideBar from "./sideBar";
 import ListGroup from "./common/listGroup";
 
 import { getGenerations } from "../services/pokeServices/generationService";
+import { getTypes } from "../services/pokeServices/typeService";
+
 class Pokedex extends React.Component<any, any> {
   state = {
-    categories: [{ name: "generation" }, { name: "version" }, { name: "type" }],
+    categories: [{ name: "generation" }, { name: "type" }],
     filters: [],
     generations: [],
     versions: [],
@@ -23,13 +25,22 @@ class Pokedex extends React.Component<any, any> {
   async componentDidMount() {
     const data = await getGenerations();
     const generations = [{ _id: "", name: "All Generations" }, ...data];
-
+    const types = await getTypes();
     this.setState({ generations });
     this.setState({ filters: generations });
+    this.setState({ types });
   }
 
-  handleCategorySelect = (category: string) => {
+  handleCategorySelect = (category: any) => {
     this.setState({ selectedCategory: category });
+    switch (category.name) {
+      case "generation":
+        this.setState({ filters: this.state.generations });
+        break;
+      case "type":
+        this.setState({ filters: this.state.types });
+        break;
+    }
   };
 
   handleFilterSelect = (filter: string) => {

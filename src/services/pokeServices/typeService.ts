@@ -2,13 +2,18 @@ import { pokeApi } from "../httpService";
 
 const apiEndpoint = "/type";
 
-export async function getGenerations() {
-  const res = await pokeApi.get("", {
+export async function getTypes() {
+  const { data } = await pokeApi.get(apiEndpoint, {
     params: {
       limit: 20,
       offset: 0,
     },
   });
 
-  console.log(res);
+  let results: any[] = data.results;
+  for (let i = 1; i <= results.length; i++) {
+    results[i - 1]._id = i;
+  }
+
+  return results;
 }
