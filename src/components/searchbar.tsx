@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: 0,
       width: "100%",
       [theme.breakpoints.up("sm")]: {
-        marginLeft: theme.spacing(53),
         width: "auto",
       },
     },
@@ -58,7 +57,7 @@ const SearchBar: React.FunctionComponent<any> = () => {
         <SearchIcon />
       </div>
       <InputBase
-        placeholder="Search..."
+        placeholder="Search pokemons.."
         className={classes.inputInput}
         inputProps={{ "arial-label": "search" }}
       />

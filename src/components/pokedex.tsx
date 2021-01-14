@@ -23,9 +23,11 @@ class Pokedex extends React.Component<any, any> {
   };
 
   async componentDidMount() {
-    const data = await getGenerations();
+    let data = await getGenerations();
     const generations = [{ _id: "", name: "All Generations" }, ...data];
-    const types = await getTypes();
+    data = await getTypes();
+    const types = [{ _id: "", name: "All Types" }, ...data];
+
     this.setState({ generations });
     this.setState({ filters: generations });
     this.setState({ types });
@@ -49,7 +51,7 @@ class Pokedex extends React.Component<any, any> {
 
   render() {
     return (
-      <div className="row">
+      <div className="row" style={{ margin: 0 }}>
         <div className="col-2">
           <SideBar />
         </div>
