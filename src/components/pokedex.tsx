@@ -50,10 +50,10 @@ class Pokedex extends React.Component<any, any> {
   render() {
     return (
       <div className="row">
-        <div className="col-3">
+        <div className="col-2">
           <SideBar />
         </div>
-        <div className="col-3">
+        <div className="col-2">
           <ListGroup
             items={this.state.categories}
             selectedItem={this.state.selectedCategory}
