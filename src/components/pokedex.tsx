@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import SearchBar from "./searchbar";
 import PokemonsGrid from "./pokemonsGrid";
 import SideBar from "./sideBar";
 import ListGroup from "./common/listGroup";
@@ -7,7 +6,11 @@ import ListGroup from "./common/listGroup";
 import { getPokemons } from "../services/pokeServices/pokemonService";
 import { getGenerations } from "../services/pokeServices/generationService";
 import { getTypes } from "../services/pokeServices/typeService";
-import { Pokemon } from "../models/Pokemon";
+import { Pokemon, PokemonType } from "../models/Pokemon";
+import SearchBox from "./common/searchBox";
+import { paginate } from "../utils/paginate";
+import _ from "lodash";
+import Pagination from "./common/pagination";
 
 const Pokedex: React.FunctionComponent<any> = () => {
   const [categories, setCategories] = useState<any[]>([
@@ -22,8 +25,10 @@ const Pokedex: React.FunctionComponent<any> = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(9);
   const [searchQuery, setSearchQuery] = useState<string>("");
+
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [selectedFilter, setSelectedFilter] = useState<any>(null);
+  const [selectedType, setSelectedType] = useState<any>(null);
 
   useEffect(() => {
     const initializeData = async () => {
@@ -34,7 +39,6 @@ const Pokedex: React.FunctionComponent<any> = () => {
       const types = [{ _id: "", name: "All Types" }, ...data];
 
       let pokemons = await getPokemons();
-      pokemons = pokemons.slice(0, 9); //temp test
       setGenerations(generations);
       setTypes(types);
 
@@ -56,11 +60,39 @@ const Pokedex: React.FunctionComponent<any> = () => {
     }
   };
 
-  const handleFilterSelect = (filter: string) => {
+  const handleFilterSelect = (filter: any) => {
     setSelectedFilter(filter);
     setSearchQuery("");
     setCurrentPage(1);
   };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    setSelectedFilter(null);
+    setCurrentPage(1);
+  };
+
+  const getPageData = (): any => {
+    let filtered = pokemons;
+    if (searchQuery) {
+      filtered = pokemons.filter((p) =>
+        p.name.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+    } else if (selectedCategory && selectedFilter && selectedFilter._id) {
+      switch (selectedCategory.name) {
+        case "generation":
+          break;
+        case "type":
+          filtered = pokemons.filter((p) => p.type == selectedFilter.name);
+          break;
+      }
+    }
+
+    const currPagePokemons = paginate(filtered, currentPage, pageSize);
+
+    return { totalCount: filtered.length, currPagePokemons };
+  };
+  const { totalCount, currPagePokemons } = getPageData();
 
   return (
     <div className="row" style={{ margin: 0 }}>
@@ -82,9 +114,15 @@ const Pokedex: React.FunctionComponent<any> = () => {
           onItemSelect={handleFilterSelect}
         />
       </div>
-      <div className="col">
-        <SearchBar />
-        <PokemonsGrid pokemons={pokemons} />
+      <div className="col-8">
+        <SearchBox value={searchQuery} onChange={handleSearch} />
+        <PokemonsGrid pokemons={currPagePokemons} />
+        <Pagination
+          itemsCount={totalCount}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </div>
   );
