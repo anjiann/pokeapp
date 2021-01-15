@@ -2,6 +2,10 @@ import { pokeApi } from "../httpService";
 
 const apiEndpoint = "/generation";
 
+export function generationUrl(identifier: any) {
+  return `${apiEndpoint}/${identifier}`;
+}
+
 export async function getGenerations() {
   const { data } = await pokeApi.get(apiEndpoint);
 
