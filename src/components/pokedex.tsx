@@ -26,7 +26,9 @@ const Pokedex: React.FunctionComponent<any> = () => {
   const [pageSize, setPageSize] = useState<number>(9);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const [selectedCategory, setSelectedCategory] = useState<any>({
+    name: "type",
+  });
   const [selectedFilter, setSelectedFilter] = useState<any>(null);
   const [selectedType, setSelectedType] = useState<any>(null);
 
@@ -42,7 +44,7 @@ const Pokedex: React.FunctionComponent<any> = () => {
       setGenerations(generations);
       setTypes(types);
 
-      setFilters(generations);
+      setFilters(types);
       setPokemons(pokemons);
     };
     initializeData();
@@ -83,7 +85,11 @@ const Pokedex: React.FunctionComponent<any> = () => {
         case "generation":
           break;
         case "type":
-          filtered = pokemons.filter((p) => p.type == selectedFilter.name);
+          filtered = pokemons.filter(
+            (p) =>
+              p.type[0] == selectedFilter.name ||
+              p.type[1] == selectedFilter.name
+          );
           break;
       }
     }
@@ -100,14 +106,14 @@ const Pokedex: React.FunctionComponent<any> = () => {
         <SideBar />
       </div>
       <div className="col-2">
-        <ListGroup
+        {/* <ListGroup
           items={categories}
           selectedItem={selectedCategory}
           onItemSelect={handleCategorySelect}
           textProperty="name"
           valueProperty="name"
           isHorizontal={true}
-        />
+        /> */}
         <ListGroup
           items={filters}
           selectedItem={selectedFilter}

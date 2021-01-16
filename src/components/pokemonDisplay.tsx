@@ -7,7 +7,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { Pokemon, PokemonType } from "../models/Pokemon";
+import FavoriteTwoToneIcon from "@material-ui/icons/FavoriteTwoTone";
 
 const types = {
   flying: {
@@ -68,11 +71,14 @@ const types = {
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
-    maxWidth: 400,
+    minWidth: 200,
+    maxWidth: 300,
   },
   picture: {
-    height: 150,
+    height: 225,
+  },
+  cardContent: {
+    backgroundColor: "#373737",
   },
   ...types,
 });
@@ -89,28 +95,54 @@ export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
   return (
     <Card className={classes.root + " " + classes.steel}>
       <CardMedia
-        className={classes.picture + " " + classes.ice}
+        className={classes.picture}
+        style={{ backgroundColor: "black" }}
         image={props.pokemon.picture}
         title={`Picture of ${props.pokemon.name}`}
       />
-      <CardContent>
-        <Typography variant="h5" component="h3">
-          {props.pokemon.name}
-        </Typography>
-        <Typography variant="body2" component="p">
-          ID: {props.pokemon.id} Weight: {props.pokemon.weight}
-        </Typography>
-        <Chip
-          className={classes[props.pokemon.type[0]]}
-          label={props.pokemon.type[0]}
-        />
-        {/* conditional rendering */}
-        {props.pokemon.type[1] && (
+      <CardContent className={classes.cardContent}>
+        <div className="row">
+          <Typography
+            style={{ color: "white", marginLeft: 15 }}
+            variant="h5"
+            component="h3"
+          >
+            {props.pokemon.name}
+          </Typography>
+        </div>
+        <div className="row">
           <Chip
-            className={classes[props.pokemon.type[1]]}
-            label={props.pokemon.type[1]}
+            className={classes[props.pokemon.type[0]]}
+            style={{ marginLeft: 15, marginRight: 5 }}
+            label={props.pokemon.type[0]}
           />
-        )}
+          {props.pokemon.type[1] && (
+            <Chip
+              className={classes[props.pokemon.type[1]]}
+              label={props.pokemon.type[1]}
+            />
+          )}
+          <div
+            className="ml-auto"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginRight: 10,
+            }}
+          >
+            <FontAwesomeIcon
+              icon="plus"
+              style={{
+                margin: "0 5",
+              }}
+            />
+            <FavoriteTwoToneIcon
+              style={{
+                margin: "0 5",
+              }}
+            />
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
