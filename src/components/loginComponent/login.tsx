@@ -88,7 +88,7 @@ const Login: React.FunctionComponent<any> = (props) => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Username"
             name="email"
             autoComplete="off"
             autoFocus
