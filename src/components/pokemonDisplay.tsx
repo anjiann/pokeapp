@@ -1,16 +1,27 @@
 import {
+  Button,
   Card,
   CardContent,
   CardMedia,
   Chip,
+  Grid,
+  IconButton,
   makeStyles,
   Typography,
 } from "@material-ui/core";
+
+import React, { SyntheticEvent } from "react";
+import { Pokemon, PokemonType } from "../models/Pokemon";
+
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Pokemon } from "../models/Pokemon";
 import Like from "./common/like";
+
+
+import { deletePokeFromFavorite } from "../services/pokemonServices";
+import { Favorites } from "../models/User";
 
 const types = {
   flying: {
@@ -69,7 +80,7 @@ const types = {
   },
 };
 
-const useStyles = makeStyles({
+const useStyles=makeStyles((theme)=>({
   root: {
     minWidth: 200,
     maxWidth: 300,
@@ -83,11 +94,18 @@ const useStyles = makeStyles({
   faIcon: {
     color: "white",
   },
+  margin:{
+    margin:theme.spacing(1)
+  },
+  icon:{
+alignItems:'left'
+  },
   ...types,
-});
+}));
 
 interface IPokemonDisplayProps {
   pokemon: Pokemon;
+  favorite: Favorites;
 }
 
 export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (

@@ -17,6 +17,12 @@ import Navbar from "./components/navbar";
 import { NotFound } from "./components/notFound";
 
 import ProtectedRoute from "./components/protectedRoute";
+import Login from "./components/loginComponent/login";
+import Register from "./components/registerComponent/register";
+import FavoritesList from "./components/favoriteslist";
+import Team from "./components/team";
+import TeamCard from "./components/teamCard";
+
 
 library.add(fas, faPlus, faHeart);
 
@@ -29,9 +35,18 @@ function App() {
       <Navbar />
       <Router>
         <Switch>
-          {/* <Route path="/login" component={Login} />
+          <Route path="/login" component={Login} >
+           
+            </Route>
+          
+            <Route path="/fav" component={FavoritesList} >
+           
+           </Route>
+           <Route path="/teams" component={Team} >
+           
+           </Route>
           <Route path="/register" component={Register} />
-          <ProtectedRoute
+          {/* <ProtectedRoute
             path="users/:userId/favourites"
             component={Favourites}
           />
