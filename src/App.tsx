@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -21,8 +21,8 @@ import Login from "./components/loginComponent/login";
 import Register from "./components/registerComponent/register";
 import FavoritesList from "./components/favoriteslist";
 import Team from "./components/team";
-import TeamCard from "./components/teamCard";
-
+import { Pokemon } from "./models/Pokemon";
+import { getPokemons } from "./services/pokeServices/pokemonService";
 
 library.add(fas, faPlus, faHeart);
 
@@ -30,21 +30,26 @@ export const UserContext = React.createContext<any>(undefined);
 
 function App() {
   const [user, changeUser] = useState<User>();
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+
+  useEffect(() => {
+    const initializeData = async () => {
+      let pokemons = await getPokemons();
+
+      setPokemons(pokemons);
+    };
+    initializeData();
+  }, []);
+
   return (
     <UserContext.Provider value={user}>
       <Navbar />
       <Router>
         <Switch>
-          <Route path="/login" component={Login} >
-           
-            </Route>
-          
-            <Route path="/fav" component={FavoritesList} >
-           
-           </Route>
-           <Route path="/teams" component={Team} >
-           
-           </Route>
+          <Route path="/login" component={Login}></Route>
+
+          <Route path="/fav" component={FavoritesList}></Route>
+          <Route path="/teams" component={Team}></Route>
           <Route path="/register" component={Register} />
           {/* <ProtectedRoute
             path="users/:userId/favourites"
@@ -54,7 +59,10 @@ function App() {
             path="users/:userId/teams/:teamId"
             component={Teams}
           /> */}
-          <Route path="/pokemons" component={Pokedex} />
+          <Route
+            path="/pokemons"
+            render={() => <Pokedex pokemons={pokemons} />}
+          />
           <Route path="/not-found" component={NotFound} />
           <Redirect exact from="/" to="/pokemons" />
           <Redirect to="/not-found" />

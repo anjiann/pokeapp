@@ -12,7 +12,10 @@ import { paginate } from "../utils/paginate";
 import _ from "lodash";
 import Pagination from "./common/pagination";
 
-const Pokedex: React.FunctionComponent<any> = () => {
+interface IPokedex {
+  pokemons: Pokemon[];
+}
+const Pokedex: React.FunctionComponent<IPokedex> = ({ pokemons }) => {
   const [categories, setCategories] = useState<any[]>([
     { name: "generation" },
     { name: "type" },
@@ -20,7 +23,6 @@ const Pokedex: React.FunctionComponent<any> = () => {
   const [filters, setFilters] = useState<any[]>([]);
   const [generations, setGenerations] = useState<any[]>([]);
   const [types, setTypes] = useState<any[]>([]);
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(9);
@@ -40,12 +42,10 @@ const Pokedex: React.FunctionComponent<any> = () => {
       data = await getTypes();
       const types = [{ _id: "", name: "All Types" }, ...data];
 
-      let pokemons = await getPokemons();
       setGenerations(generations);
       setTypes(types);
 
       setFilters(types);
-      setPokemons(pokemons);
     };
     initializeData();
   }, []);
