@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -16,10 +14,7 @@ import { login } from '../../services/authService';
 import { toast } from 'react-toastify';
 import { Redirect, useHistory } from "react-router-dom";
 
-interface ILoginProps{
-  updateCurrentUser:(u:User)=>void
-  currentUser: User
-}
+
 const useStyles=makeStyles((theme)=>({
   paper:{
     marginTop:theme.spacing(8),
@@ -39,7 +34,14 @@ const useStyles=makeStyles((theme)=>({
     margin:theme.spacing(3,0,2),
   },
 }));
-const Login: React.FunctionComponent<ILoginProps> = (props) => {
+/*
+interface ILoginProps{
+  uCurrentUser: (u:User) => void
+  currentUser: {}
+}*/
+
+const Login: React.FunctionComponent<any> = (props) => {
+ // const [currentUser,updateCurrentUser] = useState({userId:1, userName:'name', userPassword:'password', userFirstName:'name', userLastName:'name',userFavorites:[],userTeams:[]})
   const [userName,changeUsername]=useState("")
   const [userPassword, changePassword]=useState("")
   const classes = useStyles();
@@ -57,8 +59,12 @@ const Login: React.FunctionComponent<ILoginProps> = (props) => {
     e.preventDefault()
     try{
      let user=await login(userName,userPassword)
-     history.push("/");
-    // props.updateCurrentUser(user)
+  //   updateCurrentUser(user);
+    console.log(user);
+     //props.uCurrentUser(user)
+     //console.log(props)
+    history.push("/");
+    
     }
     catch(error){
       changePassword("")
@@ -121,4 +127,5 @@ const Login: React.FunctionComponent<ILoginProps> = (props) => {
     </Container>
   );
 }
+
 export default Login;

@@ -14,6 +14,12 @@ import { NotFound } from "./components/notFound";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import ProtectedRoute from "./components/protectedRoute";
+import Login from "./components/loginComponent/login";
+import Register from "./components/registerComponent/register";
+import FavoritesList from "./components/favoriteslist";
+import Team from "./components/team";
+import TeamCard from "./components/teamCard";
+
 
 export const UserContext = React.createContext<any>(undefined);
 
@@ -24,9 +30,18 @@ function App() {
       <Navbar />
       <Router>
         <Switch>
-          {/* <Route path="/login" component={Login} />
+          <Route path="/login" component={Login} >
+           
+            </Route>
+          
+            <Route path="/fav" component={FavoritesList} >
+           
+           </Route>
+           <Route path="/teams" component={Team} >
+           
+           </Route>
           <Route path="/register" component={Register} />
-          <ProtectedRoute
+          {/* <ProtectedRoute
             path="users/:userId/favourites"
             component={Favourites}
           />

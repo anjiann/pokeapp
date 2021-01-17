@@ -10,6 +10,7 @@ export class UserR {
 const apiEndpoint = "/user";
 export function register(user:UserR) {
   return dbApi.post(apiEndpoint, {
+   // userId:user.userId,
     userName: user.userName,
     userPassword: user.userPassword,
     userFirstname: user.userFirstName,

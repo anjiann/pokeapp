@@ -68,6 +68,7 @@ const Register: React.FunctionComponent<IRegisterProps> = (props) => {
     e.preventDefault()
     try{
    var data={
+     'userId':0,
      'userFirstName':userFirstName,
      'userLastName':userLastName,
      'userName':userName,

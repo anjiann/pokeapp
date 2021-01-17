@@ -1,13 +1,19 @@
 import {
+  Button,
   Card,
   CardContent,
   CardMedia,
   Chip,
+  Grid,
+  IconButton,
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import { Pokemon, PokemonType } from "../models/Pokemon";
+
+import { deletePokeFromFavorite } from "../services/pokemonServices";
+import { Favorites } from "../models/User";
 
 const types = {
   flying: {
@@ -66,7 +72,7 @@ const types = {
   },
 };
 
-const useStyles = makeStyles({
+const useStyles=makeStyles((theme)=>({
   root: {
     minWidth: 275,
     maxWidth: 400,
@@ -74,18 +80,36 @@ const useStyles = makeStyles({
   picture: {
     height: 150,
   },
+  margin:{
+    margin:theme.spacing(1)
+  },
+  icon:{
+alignItems:'left'
+  },
   ...types,
-});
+}));
 
 interface IPokemonDisplayProps {
   pokemon: Pokemon;
+  favorite: Favorites;
 }
 
 export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
   props
 ) => {
   const classes = useStyles();
-
+  const deletePoke=async (e:SyntheticEvent)=>{
+    e.preventDefault()
+    try{
+    
+   deletePokeFromFavorite(props.favorite.favId)
+   console.log("I am here")
+    }
+    catch(error){
+     
+     console.log(error)
+    }
+  }
   return (
     <Card className={classes.root + " " + classes.steel}>
       <CardMedia
