@@ -6,11 +6,7 @@ import {
   Switch,
 } from "react-router-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faCheckSquare,
-  faCoffee,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { fas, faPlus, faHeart } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./App.css";
@@ -22,7 +18,7 @@ import { NotFound } from "./components/notFound";
 
 import ProtectedRoute from "./components/protectedRoute";
 
-library.add(faCheckSquare, faCoffee, faPlus);
+library.add(fas, faPlus, faHeart);
 
 export const UserContext = React.createContext<any>(undefined);
 

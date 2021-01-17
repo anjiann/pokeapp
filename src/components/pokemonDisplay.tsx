@@ -6,11 +6,11 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { Pokemon, PokemonType } from "../models/Pokemon";
-import FavoriteTwoToneIcon from "@material-ui/icons/FavoriteTwoTone";
+import { Pokemon } from "../models/Pokemon";
+import Like from "./common/like";
 
 const types = {
   flying: {
@@ -80,6 +80,9 @@ const useStyles = makeStyles({
   cardContent: {
     backgroundColor: "#373737",
   },
+  faIcon: {
+    color: "white",
+  },
   ...types,
 });
 
@@ -90,8 +93,16 @@ interface IPokemonDisplayProps {
 export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
   props
 ) => {
+  const [liked, setLiked] = useState<boolean>(false);
   const classes = useStyles();
 
+  const handlePlusClick = () => {
+    console.log("clicked");
+  };
+
+  const handleLikeClick = () => {
+    setLiked(!liked);
+  };
   return (
     <Card className={classes.root + " " + classes.steel}>
       <CardMedia
@@ -132,15 +143,15 @@ export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
           >
             <FontAwesomeIcon
               icon="plus"
+              className={classes.faIcon}
               style={{
                 margin: "0 5",
+                cursor: "pointer",
               }}
+              onClick={handlePlusClick}
             />
-            <FavoriteTwoToneIcon
-              style={{
-                margin: "0 5",
-              }}
-            />
+
+            <Like liked={liked} onClick={handleLikeClick} />
           </div>
         </div>
       </CardContent>
