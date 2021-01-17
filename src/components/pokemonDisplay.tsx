@@ -3,22 +3,22 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Checkbox,
   Chip,
-  Grid,
+  Divider,
   IconButton,
   makeStyles,
+  Menu,
+  MenuItem,
+  TextField,
   Typography,
 } from "@material-ui/core";
 
-import React, { SyntheticEvent } from "react";
+import React, { useState } from "react";
 import { Pokemon, PokemonType } from "../models/Pokemon";
 
-import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import { Pokemon } from "../models/Pokemon";
 import Like from "./common/like";
-
 
 import { deletePokeFromFavorite } from "../services/pokemonServices";
 import { Favorites } from "../models/User";
@@ -80,7 +80,7 @@ const types = {
   },
 };
 
-const useStyles=makeStyles((theme)=>({
+const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 200,
     maxWidth: 300,
@@ -94,28 +94,40 @@ const useStyles=makeStyles((theme)=>({
   faIcon: {
     color: "white",
   },
-  margin:{
-    margin:theme.spacing(1)
+  margin: {
+    margin: theme.spacing(1),
   },
-  icon:{
-alignItems:'left'
+  icon: {
+    alignItems: "left",
   },
   ...types,
 }));
 
 interface IPokemonDisplayProps {
   pokemon: Pokemon;
-  favorite: Favorites;
+  favorite?: Favorites;
 }
 
 export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
   props
 ) => {
   const [liked, setLiked] = useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [createNewTeam, setCreateNewTeam] = React.useState<boolean>(false);
   const classes = useStyles();
 
-  const handlePlusClick = () => {
-    console.log("clicked");
+  const dummyTeamsData = [
+    { name: "team 1" },
+    { name: "team 2" },
+    { name: "team 3" },
+  ];
+  const handlePlusClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+    setCreateNewTeam(false);
+  };
+
+  const handlePlusClose = () => {
+    setAnchorEl(null);
   };
 
   const handleLikeClick = () => {
@@ -159,16 +171,68 @@ export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
               marginRight: 10,
             }}
           >
-            <FontAwesomeIcon
-              icon="plus"
-              className={classes.faIcon}
-              style={{
-                margin: "0 5",
-                cursor: "pointer",
-              }}
+            <IconButton
+              aria-controls="simple-menu"
+              aria-haspopup="true"
               onClick={handlePlusClick}
-            />
-
+              style={{ padding: 0 }}
+            >
+              <FontAwesomeIcon
+                icon="plus"
+                className={classes.faIcon}
+                style={{
+                  margin: "0 5",
+                  cursor: "pointer",
+                  outline: "none",
+                }}
+              />
+            </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handlePlusClose}
+            >
+              {dummyTeamsData.map((team) => (
+                <MenuItem disableRipple key={team.name}>
+                  <Checkbox
+                    defaultChecked
+                    color="primary"
+                    inputProps={{ "aria-label": "secondary checkbox" }}
+                  />
+                  {team.name}
+                </MenuItem>
+              ))}
+              <Divider />
+              {createNewTeam ? (
+                <section>
+                  <MenuItem disableRipple>
+                    <TextField
+                      required
+                      id="standard-required"
+                      label="Name"
+                      placeholder="Enter team name..."
+                      style={{ marginLeft: 16, marginRight: 16 }}
+                    />
+                  </MenuItem>
+                  <MenuItem disableRipple>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      className={"ml-auto"}
+                    >
+                      Create
+                    </Button>
+                  </MenuItem>
+                </section>
+              ) : (
+                <MenuItem onClick={() => setCreateNewTeam(true)}>
+                  <FontAwesomeIcon icon="plus" style={{ width: 42 }} />
+                  new team
+                </MenuItem>
+              )}
+            </Menu>
             <Like liked={liked} onClick={handleLikeClick} />
           </div>
         </div>
