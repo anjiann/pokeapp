@@ -26,7 +26,7 @@ const Navbar: React.FunctionComponent<any> = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed" style={{ width: "100vw" }}>
         <Toolbar>
           <IconButton
             edge="start"

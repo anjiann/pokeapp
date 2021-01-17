@@ -2,10 +2,14 @@ import { pokeApi } from "../httpService";
 
 const apiEndpoint = "/type";
 
+export function typeUrl(identifier: any) {
+  return `${apiEndpoint}/${identifier}`;
+}
+
 export async function getTypes() {
   const { data } = await pokeApi.get(apiEndpoint, {
     params: {
-      limit: 20,
+      limit: 18,
       offset: 0,
     },
   });

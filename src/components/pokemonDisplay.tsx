@@ -9,8 +9,16 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
+
 import React, { SyntheticEvent } from "react";
 import { Pokemon, PokemonType } from "../models/Pokemon";
+
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { Pokemon } from "../models/Pokemon";
+import Like from "./common/like";
+
 
 import { deletePokeFromFavorite } from "../services/pokemonServices";
 import { Favorites } from "../models/User";
@@ -74,11 +82,17 @@ const types = {
 
 const useStyles=makeStyles((theme)=>({
   root: {
-    minWidth: 275,
-    maxWidth: 400,
+    minWidth: 200,
+    maxWidth: 300,
   },
   picture: {
-    height: 150,
+    height: 225,
+  },
+  cardContent: {
+    backgroundColor: "#373737",
+  },
+  faIcon: {
+    color: "white",
   },
   margin:{
     margin:theme.spacing(1)
@@ -97,44 +111,67 @@ interface IPokemonDisplayProps {
 export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
   props
 ) => {
+  const [liked, setLiked] = useState<boolean>(false);
   const classes = useStyles();
-  const deletePoke=async (e:SyntheticEvent)=>{
-    e.preventDefault()
-    try{
-    
-   deletePokeFromFavorite(props.favorite.favId)
-   console.log("I am here")
-    }
-    catch(error){
-     
-     console.log(error)
-    }
-  }
+
+  const handlePlusClick = () => {
+    console.log("clicked");
+  };
+
+  const handleLikeClick = () => {
+    setLiked(!liked);
+  };
   return (
     <Card className={classes.root + " " + classes.steel}>
       <CardMedia
-        className={classes.picture + " " + classes.ice}
+        className={classes.picture}
+        style={{ backgroundColor: "black" }}
         image={props.pokemon.picture}
         title={`Picture of ${props.pokemon.name}`}
       />
-      <CardContent>
-        <Typography variant="h5" component="h3">
-          {props.pokemon.name}
-        </Typography>
-        <Typography variant="body2" component="p">
-          ID: {props.pokemon.id} Weight: {props.pokemon.weight}
-        </Typography>
-        <Chip
-          className={classes[props.pokemon.type[0]]}
-          label={props.pokemon.type[0]}
-        />
-        {/* conditional rendering */}
-        {props.pokemon.type[1] && (
+      <CardContent className={classes.cardContent}>
+        <div className="row">
+          <Typography
+            style={{ color: "white", marginLeft: 15 }}
+            variant="h5"
+            component="h3"
+          >
+            {props.pokemon.name}
+          </Typography>
+        </div>
+        <div className="row">
           <Chip
-            className={classes[props.pokemon.type[1]]}
-            label={props.pokemon.type[1]}
+            className={classes[props.pokemon.type[0]]}
+            style={{ marginLeft: 15, marginRight: 5 }}
+            label={props.pokemon.type[0]}
           />
-        )}
+          {props.pokemon.type[1] && (
+            <Chip
+              className={classes[props.pokemon.type[1]]}
+              label={props.pokemon.type[1]}
+            />
+          )}
+          <div
+            className="ml-auto"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginRight: 10,
+            }}
+          >
+            <FontAwesomeIcon
+              icon="plus"
+              className={classes.faIcon}
+              style={{
+                margin: "0 5",
+                cursor: "pointer",
+              }}
+              onClick={handlePlusClick}
+            />
+
+            <Like liked={liked} onClick={handleLikeClick} />
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

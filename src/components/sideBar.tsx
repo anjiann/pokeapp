@@ -16,7 +16,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import SportsEsportsTwoToneIcon from "@material-ui/icons/SportsEsportsTwoTone";
 import FavoriteTwoToneIcon from "@material-ui/icons/FavoriteTwoTone";
 import PeopleOutlineTwoToneIcon from "@material-ui/icons/PeopleOutlineTwoTone";
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,10 +31,6 @@ const useStyles = makeStyles((theme: Theme) =>
     drawerPaper: {
       width: drawerWidth,
     },
-    drawerContainer: {
-      overflow: "auto",
-      padding: theme.spacing(5, 0, 5, 0),
-    },
     content: {
       flexGrow: 1,
       padding: theme.spacing(3),
@@ -44,6 +40,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const SideBar: React.FunctionComponent<any> = () => {
   const classes = useStyles();
+
+  const renderSwitch = (index: number): any => {
+    switch (index) {
+      case 0:
+        return <FavoriteTwoToneIcon />;
+      case 1:
+        return <PeopleOutlineTwoToneIcon />;
+      case 2:
+        return <SportsEsportsTwoToneIcon />;
+    }
+  };
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -55,31 +62,16 @@ const SideBar: React.FunctionComponent<any> = () => {
         }}
       >
         <Toolbar />
-        <div className={classes.drawerContainer}>
-          <List>
-            <ListItem button>
-              <ListItemIcon>
-                <FavoriteTwoToneIcon />
-              </ListItemIcon>
-              <ListItemText>Favorite</ListItemText>
+        <Divider />
+
+        <List>
+          {["Favourites", "Teams", "Game"].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>{renderSwitch(index)}</ListItemIcon>
+              <ListItemText primary={text} />
             </ListItem>
-            <Divider />
-            <ListItem button>
-              <ListItemIcon>
-                <PeopleOutlineTwoToneIcon />
-              </ListItemIcon>
-              <ListItemText>Teams</ListItemText>
-            </ListItem>
-            <Divider />
-            <ListItem button>
-              <ListItemIcon>
-                <SportsEsportsTwoToneIcon />
-              </ListItemIcon>
-              <ListItemText>Game</ListItemText>
-            </ListItem>
-          </List>
-          <Divider />
-        </div>
+          ))}
+        </List>
       </Drawer>
       <main className={classes.content}>
         <Toolbar />

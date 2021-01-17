@@ -5,6 +5,10 @@ import {
   Redirect,
   Switch,
 } from "react-router-dom";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas, faPlus, faHeart } from "@fortawesome/free-solid-svg-icons";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import "./App.css";
 
 import { User } from "./models/User";
@@ -12,7 +16,6 @@ import Pokedex from "./components/pokedex";
 import Navbar from "./components/navbar";
 import { NotFound } from "./components/notFound";
 
-import "bootstrap/dist/css/bootstrap.min.css";
 import ProtectedRoute from "./components/protectedRoute";
 import Login from "./components/loginComponent/login";
 import Register from "./components/registerComponent/register";
@@ -20,6 +23,8 @@ import FavoritesList from "./components/favoriteslist";
 import Team from "./components/team";
 import TeamCard from "./components/teamCard";
 
+
+library.add(fas, faPlus, faHeart);
 
 export const UserContext = React.createContext<any>(undefined);
 
