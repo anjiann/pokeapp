@@ -105,7 +105,7 @@ const Pokedex: React.FunctionComponent<IPokedex> = ({ pokemons }) => {
       <div className="col-2">
         <SideBar />
       </div>
-      <div className="col-2">
+      <div className="col-2" style={{marginTop:"2vw", marginLeft:"-3vw"}}>
         {/* <ListGroup
           items={categories}
           selectedItem={selectedCategory}
@@ -120,7 +120,7 @@ const Pokedex: React.FunctionComponent<IPokedex> = ({ pokemons }) => {
           onItemSelect={handleFilterSelect}
         />
       </div>
-      <div className="col-8">
+      <div className="col-8" style={{marginTop:"1vw"}}>
         <SearchBox value={searchQuery} onChange={handleSearch} />
         <PokemonsGrid pokemons={currPagePokemons} />
         <Pagination
