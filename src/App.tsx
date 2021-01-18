@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -15,24 +16,23 @@ import { User } from "./models/User";
 import Pokedex from "./components/pokedex";
 import Navbar from "./components/navbar";
 import { NotFound } from "./components/notFound";
-
 import ProtectedRoute from "./components/protectedRoute";
 import Login from "./components/loginComponent/login";
 import Register from "./components/registerComponent/register";
 import FavoritesList from "./components/favoriteslist";
 import Team from "./components/team";
+import TeamCard from "./components/teamCard";
 import { Pokemon } from "./models/Pokemon";
 import { getPokemons } from "./services/pokeServices/pokemonService";
 import { Game } from "./components/game";
 
+
 library.add(fas, faPlus, faHeart);
-
+export const PokemonContext=React.createContext<any>(undefined);
 export const UserContext = React.createContext<any>(undefined);
-
 function App() {
   const [user, changeUser] = useState<User>();
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-
   useEffect(() => {
     const initializeData = async () => {
       let pokemons = await getPokemons();
@@ -44,6 +44,9 @@ function App() {
 
   return (
     <UserContext.Provider value={user}>
+
+ <PokemonContext.Provider value={pokemons}>
+      <Navbar />
       <Router>
         <Navbar />
         <Switch>
@@ -68,6 +71,7 @@ function App() {
           <Redirect to="/not-found" />
         </Switch>
       </Router>
+      </PokemonContext.Provider>
     </UserContext.Provider>
   );
 }
