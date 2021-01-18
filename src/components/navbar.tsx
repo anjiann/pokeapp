@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme: Theme) =>
     menuButton: {
       marginRight: theme.spacing(2),
     },
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1,
+    },
     title: {
       flexGrow: 1,
     },
@@ -28,6 +31,7 @@ const Navbar: React.FunctionComponent<any> = () => {
   return (
     <div className={classes.root}>
       <AppBar
+        className={classes.appBar}
         position="fixed"
         style={{ backgroundColor: "#c91104", width: "100vw" }}
       >
