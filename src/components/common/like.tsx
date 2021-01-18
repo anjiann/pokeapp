@@ -18,6 +18,7 @@ const Like: React.FunctionComponent<any> = ({ liked, onClick }) => {
     <FontAwesomeIcon
       icon="heart"
       className={liked ? classes.liked : classes.regular}
+      size={"lg"}
       style={{
         margin: "0 5",
         cursor: "pointer",

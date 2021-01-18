@@ -3,20 +3,24 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Checkbox,
   Chip,
-  Grid,
+  Divider,
   IconButton,
   makeStyles,
+  Menu,
+  MenuItem,
+  TextField,
   Typography,
 } from "@material-ui/core";
 
-import React, { SyntheticEvent,useState } from "react";
+import React, { useEffect, useState, SyntheticEvent } from "react";
 import { Pokemon, PokemonType } from "../models/Pokemon";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Like from "./common/like";
 
-
-import { deletePokeFromFavorite } from "../services/pokemonServices";
+import { addFav, deletePokeFromFavorite, getfavList } from "../services/pokemonServices";
 import { Favorites } from "../models/User";
 
 const types = {
@@ -76,7 +80,7 @@ const types = {
   },
 };
 
-const useStyles=makeStyles((theme)=>({
+const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 200,
     maxWidth: 300,
@@ -90,33 +94,108 @@ const useStyles=makeStyles((theme)=>({
   faIcon: {
     color: "white",
   },
-  margin:{
-    margin:theme.spacing(1)
+  margin: {
+    margin: theme.spacing(1),
   },
-  icon:{
-alignItems:'left'
+  icon: {
+    alignItems: "left",
   },
   ...types,
 }));
 
 interface IPokemonDisplayProps {
-  pokemon: Pokemon;
-  favorite?: Favorites;
+
+  pokemon: Pokemon
+  favorite?: Favorites
+  isfavorite?: Boolean
+  trigger?: any
+
 }
+
 
 export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
   props
 ) => {
+
+  var user = JSON.parse(localStorage.getItem('userKey')!);
+  const userid = user.userId;
+
   const [liked, setLiked] = useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [createNewTeam, setCreateNewTeam] = React.useState<boolean>(false);
+  const [favotiteList, changeFavoriteList] = useState<Favorites[]>([])
   const classes = useStyles();
 
-  const handlePlusClick = () => {
-    console.log("clicked");
+  const dummyTeamsData = [
+    { name: "team 1" },
+    { name: "team 2" },
+    { name: "team 3" },
+  ];
+
+  useEffect(() => {
+    if (props.isfavorite) {
+      setLiked(!liked);
+    }
+
+    let getFavList = async () => {
+
+      changeFavoriteList(await getfavList(userid))
+    }
+    getFavList()
+
+
+
+
+  }, [])
+
+  console.log(favotiteList)
+
+  const handlePlusClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+    setCreateNewTeam(false);
   };
 
-  const handleLikeClick = () => {
-    setLiked(!liked);
+  const handlePlusClose = () => {
+    setAnchorEl(null);
   };
+
+
+
+
+
+  const handleLikeClick = () => {
+
+
+
+    setLiked(!liked)
+
+    console.log(liked)
+    if (!liked) {
+
+      let getFavList = async () => {
+
+        await addFav(userid, props.pokemon.id)
+      }
+      getFavList()
+    }
+    else if (liked) {
+      console.log("i am deleting")
+
+      let deletFav = async () => {
+
+        deletePokeFromFavorite(userid, props.pokemon.id)
+      }
+      deletFav()
+    }
+
+  };
+
+
+
+
+
+
+
   return (
     <Card className={classes.root + " " + classes.steel}>
       <CardMedia
@@ -155,20 +234,76 @@ export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
               marginRight: 10,
             }}
           >
-            <FontAwesomeIcon
-              icon="plus"
-              className={classes.faIcon}
-              style={{
-                margin: "0 5",
-                cursor: "pointer",
-              }}
+            <IconButton
+              aria-controls="simple-menu"
+              aria-haspopup="true"
               onClick={handlePlusClick}
-            />
-
-            <Like liked={liked} onClick={handleLikeClick} />
+              style={{ padding: 0 }}
+            >
+              <FontAwesomeIcon
+                icon="plus"
+                className={classes.faIcon}
+                style={{
+                  margin: "0 5",
+                  cursor: "pointer",
+                  outline: "none",
+                }}
+              />
+            </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handlePlusClose}
+            >
+              {dummyTeamsData.map((team) => (
+                <MenuItem disableRipple key={team.name}>
+                  <Checkbox
+                    defaultChecked
+                    color="primary"
+                    inputProps={{ "aria-label": "secondary checkbox" }}
+                  />
+                  {team.name}
+                </MenuItem>
+              ))}
+              <Divider />
+              {createNewTeam ? (
+                <section>
+                  <MenuItem disableRipple>
+                    <TextField
+                      required
+                      id="standard-required"
+                      label="Name"
+                      placeholder="Enter team name..."
+                      style={{ marginLeft: 16, marginRight: 16 }}
+                    />
+                  </MenuItem>
+                  <MenuItem disableRipple>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      className={"ml-auto"}
+                    >
+                      Create
+                    </Button>
+                  </MenuItem>
+                </section>
+              ) : (
+                  <MenuItem onClick={() => setCreateNewTeam(true)}>
+                    <FontAwesomeIcon icon="plus" style={{ width: 42 }} />
+                  new team
+                  </MenuItem>
+                )}
+            </Menu>
+            <div onClick={props.trigger}>
+              <Like liked={liked} onClick={handleLikeClick} />
+            </div>
           </div>
         </div>
       </CardContent>
     </Card>
-  );
+  )
+
+
 };

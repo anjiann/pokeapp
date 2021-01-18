@@ -29,8 +29,9 @@ const useStyles = makeStyles({
     color:"white",
   },
 });
-const TeamCard:React.FunctionComponent<any>=(props)=> {
+const TeamCard: React.FunctionComponent<any> = (props) => {
   const classes = useStyles();
+
   const[currentTeamList,changeCurrentTeamList]=useState<TeamList[]>([]);
  // const [currentPokemon, setPokemon]=useState<Pokemon[]>([]);
   
@@ -97,8 +98,7 @@ const TeamCard:React.FunctionComponent<any>=(props)=> {
       </IconButton>
       </CardActions>
     </Card>
-   
     </>
   );
-}
+};
 export default TeamCard;

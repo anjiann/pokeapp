@@ -16,37 +16,72 @@ export function getPokemon(id: Number) {
   return pokeApi.get(pokemonUrl(id));
 }
 
-export const getOnePokemon = async (pokeId:number):Promise<Pokemon> =>{
-  try{
-      let res = await pokeApi.get(`/pokemon/${pokeId}`)
+export const getOnePokemon = async (pokeId: number): Promise<Pokemon> => {
+  try {
+    let res = await pokeApi.get(`/pokemon/${pokeId}`)
 
-      let pokemon = new Pokemon()
-      pokemon.id = res.data.id
-      pokemon.name = res.data.name
-      pokemon.picture = res.data.sprites.front_default
-      pokemon.weight = res.data.weight
-      pokemon.type = [ res.data.types[0].type.name, res.data.types[1] && res.data.types[1].type.name]
-      return pokemon
-  }catch(e){
-      throw new Error()
+    let pokemon = new Pokemon()
+    pokemon.id = res.data.id
+    pokemon.name = res.data.name
+    pokemon.picture = res.data.sprites.front_default
+    pokemon.weight = res.data.weight
+    pokemon.type = [res.data.types[0].type.name, res.data.types[1] && res.data.types[1].type.name]
+    return pokemon
+  } catch (e) {
+    throw new Error()
   }
 }
 
-export const getTeamById=async(teamId:number):Promise<any>=>{
-  try{
-   let res=await dbApi.get(`/team/${teamId}`)
-  
-  return res.data;
- 
-  }catch(e){
+export const getTeamById = async (teamId: number): Promise<any> => {
+  try {
+    let res = await dbApi.get(`/team/${teamId}`)
+
+    return res.data;
+
+  } catch (e) {
     throw new Error();
   }
 }
 
-export function deletePokeFromFavorite(pokeId:number){
-  
- dbApi.get(`/favorite/deletfav/${pokeId}`)
-console.log("deleted")
+export function deletePokeFromFavorite(favUserId: number, favPokeId: number) {
+
+  dbApi.post(`/favorite/deletfav/`, { favUserId, favPokeId })
+  console.log("deleted")
+}
+
+export const getfavList = async (userId: number): Promise<any> => {
+
+  try {
+
+    let res = await dbApi.get(`/user/${userId}`)
+
+    return res.data.favlist
+    // wait for all request to finish 
+
+  } catch (e) {
+
+  }
+
+}
+
+export const addFav = async (favUserId: number, favPokeId: number): Promise<any> => {
+
+  let favarate = {
+    favUserId,
+    favPokeId
+  }
+
+  try {
+
+    let res = await dbApi.post("/favorite", favarate)
+
+
+    // console.log(res.data)
+    return res.data
+  }
+  catch (e) {
+
+  }
 }
 
 export class TeamNew {

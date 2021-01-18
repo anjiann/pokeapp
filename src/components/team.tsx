@@ -1,7 +1,10 @@
+
 import React, { SyntheticEvent, useContext, useEffect, useState } from "react";
 import { createTeam, deleteTeam, getTeamById } from "../services/pokemonServices";
 import {TeamList, Teams} from "../models/User"
 import { Card, CardContent, Grid, IconButton, Typography } from "@material-ui/core";
+import { getTeamById } from "../services/pokemonServices";
+import { Grid, IconButton } from "@material-ui/core";
 import TeamCard from "./teamCard";
 import { getUserById } from "../services/userService";
 import classes from "*.module.css";
@@ -13,7 +16,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
 
 const Team: React.FunctionComponent<any>=(props)=>{
     const [currentTeam,changeCurrentTeam]=useState<Teams[]>([]);
@@ -80,7 +82,7 @@ const Team: React.FunctionComponent<any>=(props)=>{
     })
   return(
     <>
-    <Grid container spacing={3}>
+      <Grid container spacing={3}>
         {displayTeam}
         </Grid>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>

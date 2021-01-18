@@ -151,7 +151,7 @@ const Register: React.FunctionComponent<IRegisterProps> = (props) => {
           <Grid container>
             <Grid item>
               <Link href="/login" variant="body2">
-                {"Already register? Login"}
+                {"Already have an account? Login"}
               </Link>
             </Grid>
           </Grid>
