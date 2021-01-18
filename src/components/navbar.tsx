@@ -26,7 +26,7 @@ const Navbar: React.FunctionComponent<any> = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" style={{ width: "100vw" }}>
+      <AppBar position="fixed" style={{  backgroundColor: '#c91104', width: "100vw" }}>
         <Toolbar>
           <IconButton
             edge="start"

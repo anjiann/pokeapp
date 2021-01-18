@@ -80,7 +80,7 @@ const Team: React.FunctionComponent<any>=(props)=>{
     })
   return(
     <>
-    <Grid container spacing={3}>
+      <Grid container spacing={3}>
         {displayTeam}
         </Grid>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>

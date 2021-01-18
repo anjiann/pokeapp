@@ -6,33 +6,31 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { TeamList, Teams } from "../models/User";
-import { addPokeToTeam, deleteTeam, getOnePokemon, getTeamById } from "../services/pokemonServices";
-import { Avatar, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText } from "@material-ui/core";
+import { addPokeToTeam, deletePokeFromTeam, deleteTeam, getOnePokemon, getTeamById } from "../services/pokemonServices";
+import { Avatar, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from "@material-ui/core";
 import { Pokemon } from "../models/Pokemon";
 import { Add } from "@material-ui/icons";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { getUserById } from "../services/userService";
 import { PokemonContext } from "../App";
-
+import RemoveIcon from '@material-ui/icons/Remove';
 const useStyles = makeStyles({
   root: {
+    marginTop:25,
     minWidth: 275,
   },
   title: {
     color:"white",
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
+    fontSize: 24,
   },
   custom:{
     color:"white",
   },
 });
-const TeamCard:React.FunctionComponent<any>=(props)=> {
+const TeamCard: React.FunctionComponent<any> = (props) => {
   const classes = useStyles();
   const[currentTeamList,changeCurrentTeamList]=useState<TeamList[]>([]);
- // const [currentPokemon, setPokemon]=useState<Pokemon[]>([]);
+const [refresh,setRefresh]=useState(false);
   
   const pokeValue=useContext(PokemonContext);
 
@@ -41,16 +39,28 @@ const TeamCard:React.FunctionComponent<any>=(props)=> {
      changeCurrentTeamList(await getTeamById(props.id))
     }
   getTeamList()
-  },[])
+  setRefresh(false)
+  },[refresh])
+
   const deleteTeamDisplay=async(id:number)=>{
-    
     try{ 
     await deleteTeam(id)
-    console.log("Success")
     }catch(e){
       console.log(e)
     }
     
+  }
+
+  const deletePokeFromTeamList=async(id:number)=>{
+    try{
+      await deletePokeFromTeam(id)
+      console.log("Delete succeed")
+    }catch(e){
+      console.log(e)
+    }
+  }
+  let changeState=()=>{
+    setRefresh(true)
   }
     let displayTeamList = pokeValue.map((pokemon:Pokemon)=>{
       for(let i=0;i<currentTeamList.length;i++){
@@ -60,6 +70,7 @@ const TeamCard:React.FunctionComponent<any>=(props)=> {
 
           <Grid xs={4}  item>
       <List>
+        <div className="row">
         <ListItem className={classes.custom} alignItems="flex-start">
           <ListItemAvatar>
             <Avatar alt={pokemon.name} src={pokemon.picture}/>
@@ -67,7 +78,14 @@ const TeamCard:React.FunctionComponent<any>=(props)=> {
           <ListItemText>
           {pokemon.name}
           </ListItemText>
+          <ListItemSecondaryAction onClick={()=>{setRefresh(true)}}>
+          <IconButton className="ml-auto" edge="end" style={{color: "white"}} onClick={()=>{deletePokeFromTeamList(currentTeamList[i].id)}}>
+            <RemoveIcon/>
+          </IconButton>
+          </ListItemSecondaryAction>
           </ListItem>
+        </div>
+
         
       </List>
           </Grid>
@@ -84,21 +102,21 @@ const TeamCard:React.FunctionComponent<any>=(props)=> {
     <Card className={classes.root} variant="outlined">
       <CardContent style={{backgroundColor: "black"}}>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-        Team
-        </Typography>
-        <Typography style={{color: "white"}}>
+        Pokemon Team<span> </span>
         {props.name}
         </Typography>
+        <div>
         {displayTeamList}
+        </div>
       </CardContent>
-      <CardActions onClick={props.triger} style={{backgroundColor: "black"}}>
+      <CardActions onClick={props.triger} style={{backgroundColor: "grey"}}>
       <IconButton onClick={()=>deleteTeamDisplay(props.id)} >
-        <DeleteIcon style={{backgroundColor: "white"}}></DeleteIcon>
+        <DeleteIcon></DeleteIcon>
       </IconButton>
       </CardActions>
     </Card>
    
     </>
   );
-}
+};
 export default TeamCard;
