@@ -25,6 +25,7 @@ import TeamCard from "./components/teamCard";
 import { Pokemon } from "./models/Pokemon";
 import { getPokemons } from "./services/pokeServices/pokemonService";
 import { Game } from "./components/game";
+import Logout from "./components/logout";
 
 
 library.add(fas, faPlus, faHeart);
@@ -50,8 +51,8 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
-          <Route path="/login" component={Login}></Route>
-
+          <Route path="/login" component={Login} />
+          <Route path="/logout" component={Logout} />
           <ProtectedRoute
             path="/fav"
             render={() => <FavoritesList pokemons={pokemons} />}

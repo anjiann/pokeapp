@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import HomeIcon from "@material-ui/icons/Home";
+import authService from "../services/authService";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Navbar: React.FunctionComponent<any> = () => {
   const classes = useStyles();
+  const currUser = authService.getCurrentUser();
 
   return (
     <div className={classes.root}>
@@ -49,12 +51,20 @@ const Navbar: React.FunctionComponent<any> = () => {
           <Typography variant="h6" className={classes.title}>
             Home
           </Typography>
-          <Button color="inherit" component={Link} to="/login">
-            Login
-          </Button>
-          <Button color="inherit" component={Link} to="/register">
-            Register
-          </Button>
+          {currUser ? (
+            <div>
+              <Button color="inherit" component={Link} to="/login">
+                Login
+              </Button>
+              <Button color="inherit" component={Link} to="/register">
+                Register
+              </Button>
+            </div>
+          ) : (
+            <Button color="inherit" component={Link} to="/logout">
+              Logout
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </div>
