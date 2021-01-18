@@ -70,17 +70,12 @@ const Pokedex: React.FunctionComponent<IPokedex> = ({ pokemons }) => {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    setSelectedFilter(null);
     setCurrentPage(1);
   };
 
   const getPageData = (): any => {
     let filtered = pokemons;
-    if (searchQuery) {
-      filtered = pokemons.filter((p) =>
-        p.name.toLowerCase().startsWith(searchQuery.toLowerCase())
-      );
-    } else if (selectedCategory && selectedFilter && selectedFilter._id) {
+    if (selectedCategory && selectedFilter && selectedFilter._id) {
       switch (selectedCategory.name) {
         case "generation":
           break;
@@ -94,6 +89,12 @@ const Pokedex: React.FunctionComponent<IPokedex> = ({ pokemons }) => {
       }
     }
 
+    if (searchQuery) {
+      filtered = filtered.filter((p) =>
+        p.name.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+    }
+
     const currPagePokemons = paginate(filtered, currentPage, pageSize);
 
     return { totalCount: filtered.length, currPagePokemons };
@@ -102,10 +103,10 @@ const Pokedex: React.FunctionComponent<IPokedex> = ({ pokemons }) => {
 
   return (
     <div className="row" style={{ margin: 0 }}>
-      <div className="col-1" style={{}}>
+      <div className="col-2">
         <SideBar />
       </div>
-      <div className="col-2" style={{marginTop:"2vw", marginLeft:"5vw"}}>
+      <div className="col-2" style={{ marginTop: "2vw" }}>
         {/* <ListGroup
           items={categories}2
           selectedItem={selectedCaqtegory}
@@ -120,7 +121,7 @@ const Pokedex: React.FunctionComponent<IPokedex> = ({ pokemons }) => {
           onItemSelect={handleFilterSelect}
         />
       </div>
-      <div className="col-8" style={{marginTop:"1vw"}}>
+      <div className="col-8" style={{ marginTop: "1vw" }}>
         <SearchBox value={searchQuery} onChange={handleSearch} />
         <PokemonsGrid pokemons={currPagePokemons} />
         <Pagination
