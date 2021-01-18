@@ -1,7 +1,7 @@
+
 import { Pokemon } from "../models/Pokemon";
 import { TeamList, Teams } from "../models/User";
 import { dbApi, pokeApi } from "./httpService";
-
 const apiEndpoint = "/pokemon";
 
 function pokemonUrl(id: Number) {
@@ -49,3 +49,27 @@ export function deletePokeFromFavorite(pokeId:number){
 console.log("deleted")
 }
 
+export class TeamNew {
+  userId: number;
+  teamName: string;
+}
+export function createTeam(team:TeamNew) {
+  return dbApi.post(`/team`, {
+  
+   teamUserId:team.userId,
+  teamName:team.teamName,
+
+  });
+}
+export function deleteTeam(teamId:number){
+  dbApi.delete(`/team/${teamId}`)
+  console.log("Success deleted!")
+}
+
+export function addPokeToTeam(teamId:number, pokeId:number){
+  dbApi.post(`/team/pokeapp`,{
+    teamListTeamid:teamId,
+    teamPokeId:pokeId
+  })
+  console.log("Success submitted")
+}

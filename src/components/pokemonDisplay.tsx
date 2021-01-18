@@ -10,13 +10,9 @@ import {
   Typography,
 } from "@material-ui/core";
 
-import React, { SyntheticEvent } from "react";
+import React, { SyntheticEvent,useState } from "react";
 import { Pokemon, PokemonType } from "../models/Pokemon";
-
-import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import { Pokemon } from "../models/Pokemon";
 import Like from "./common/like";
 
 
@@ -105,7 +101,7 @@ alignItems:'left'
 
 interface IPokemonDisplayProps {
   pokemon: Pokemon;
-  favorite: Favorites;
+  favorite?: Favorites;
 }
 
 export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (

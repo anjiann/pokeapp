@@ -13,6 +13,7 @@ import { User } from '../../models/User';
 import { login } from '../../services/authService';
 import { toast } from 'react-toastify';
 import { Redirect, useHistory } from "react-router-dom";
+import { getUserById } from '../../services/userService';
 
 
 const useStyles=makeStyles((theme)=>({
@@ -59,10 +60,8 @@ const Login: React.FunctionComponent<any> = (props) => {
     e.preventDefault()
     try{
      let user=await login(userName,userPassword)
-  //   updateCurrentUser(user);
-    console.log(user);
-     //props.uCurrentUser(user)
-     //console.log(props)
+   //  getUserById(1)
+   //  console.log(user)
     history.push("/");
     
     }

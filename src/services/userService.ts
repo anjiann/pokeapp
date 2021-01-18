@@ -18,3 +18,20 @@ export function register(user:UserR) {
   });
 }
 
+export const getUserById=async(id:number):Promise<User>=>{
+  try{
+    let res=await dbApi.get(`/user/${id}`)
+    let user=new User()
+    user.userId=res.data.userId;
+    user.userName=res.data.userName;
+user.userPassword=res.data.userPassword;
+user.userFirstName=res.data.userFirstname;
+user.userLastName=res.data.userLastname;
+user.userFavorites=res.data.favlist;
+user.userTeams=res.data.teams;
+return user
+  }catch(e){
+    throw new Error()
+  }
+}
+
