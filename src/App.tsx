@@ -25,7 +25,6 @@ import { Pokemon } from "./models/Pokemon";
 import { getPokemons } from "./services/pokeServices/pokemonService";
 import { Game } from "./components/game";
 
-
 library.add(fas, faPlus, faHeart);
 
 export const UserContext = React.createContext<any>(undefined);
@@ -50,27 +49,20 @@ function App() {
         <Switch>
           <Route path="/login" component={Login}></Route>
 
-          <Route
+          <ProtectedRoute
             path="/fav"
             render={() => <FavoritesList pokemons={pokemons} />}
-          ></Route>
-          <Route path="/teams" component={Team}></Route>
-          <Route path="/register" component={Register} />
-          {/* <ProtectedRoute
-            path="users/:userId/favourites"
-            component={Favourites}
           />
-          <ProtectedRoute
-            path="users/:userId/teams/:teamId"
-            component={Teams}
-          /> */}
+          <ProtectedRoute path="/teams" component={Team} />
+          <Route path="/register" component={Register} />
           <Route
             path="/pokemons"
             render={() => <Pokedex pokemons={pokemons} />}
           />
-          <Route
-            path ="/game"
-            render={()=> <Game pokemons={pokemons}/>}/>
+          <ProtectedRoute
+            path="/game"
+            render={() => <Game pokemons={pokemons} />}
+          />
           <Route path="/not-found" component={NotFound} />
           <Redirect exact from="/" to="/pokemons" />
           <Redirect to="/not-found" />
