@@ -106,7 +106,7 @@ const Pokedex: React.FunctionComponent<IPokedex> = ({ pokemons }) => {
       <div className="col-2">
         <SideBar />
       </div>
-      <div className="col-2" style={{ marginTop: "2vw"}}>
+      <div className="col-2" style={{ marginTop: "2vw" }}>
         {/* <ListGroup
           items={categories}2
           selectedItem={selectedCaqtegory}

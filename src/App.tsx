@@ -43,12 +43,13 @@ function App() {
 
   return (
     <UserContext.Provider value={user}>
-      <Navbar />
       <Router>
+        <Navbar />
         <Switch>
           <Route path="/login" component={Login}></Route>
 
-          <Route path="/fav"
+          <Route
+            path="/fav"
             render={() => <FavoritesList pokemons={pokemons} />}
           ></Route>
           <Route path="/teams" component={Team}></Route>
