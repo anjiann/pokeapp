@@ -20,6 +20,7 @@ import { Pokemon, PokemonType } from "../models/Pokemon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Like from "./common/like";
 
+
 import { addFav, addPokeToTeam, createTeam, deletePokeFromFavorite, getfavList, getTeamById } from "../services/pokemonServices";
 import { Favorites, Teams } from "../models/User";
 import { getUserById } from "../services/userService";
@@ -106,25 +107,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IPokemonDisplayProps {
-  pokemon: Pokemon
-  favorite?: Favorites
-  isfavorite?: Boolean
-  trigger?: any
-
+  pokemon: Pokemon;
+  favorite?: Favorites;
+  isfavorite?: Boolean;
+  trigger?: any;
 }
-
 
 export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
   props
 ) => {
-
-  var user = JSON.parse(localStorage.getItem('userKey')!);
-  const userid = user.userId;
+  var user = JSON.parse(localStorage.getItem("userKey")!);
+  const userid = user ? user.userId : null;
 
   const [liked, setLiked] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [createNewTeam, setCreateNewTeam] = React.useState<boolean>(false);
-  const [favotiteList, changeFavoriteList] = useState<Favorites[]>([])
+  const [favoritesList, changeFavoritesList] = useState<Favorites[]>([]);
   const classes = useStyles();
   const[teamList, setTeamList]=useState<Teams[]>([])
   const[teamName,setTeamName]=useState("")
@@ -143,6 +141,7 @@ const handleTeamNameChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
     }
 
     let getFavList = async () => {
+
 
       changeFavoriteList(await getfavList(userid))
     }
@@ -184,6 +183,7 @@ const handleTeamNameChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
 
 
   console.log(favotiteList)
+
   const handlePlusClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     setCreateNewTeam(false);
@@ -193,38 +193,28 @@ const handleTeamNameChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
     setAnchorEl(null);
   };
 
-
-
-
-
   const handleLikeClick = () => {
-
-
-
-    setLiked(!liked)
-
-    console.log(liked)
-    if (!liked) {
-
-      let getFavList = async () => {
-
-        await addFav(userid, props.pokemon.id)
-      }
-      getFavList()
+    if (!user) {
+      //TODO redirect to login
+      return;
     }
-    else if (liked) {
-      console.log("i am deleting")
+    setLiked(!liked);
+
+    console.log(liked);
+    if (!liked) {
+      let getFavList = async () => {
+        await addFav(userid, props.pokemon.id);
+      };
+      getFavList();
+    } else if (liked) {
+      console.log("i am deleting");
 
       let deletFav = async () => {
-
-        deletePokeFromFavorite(userid, props.pokemon.id)
-      }
-      deletFav()
+        deletePokeFromFavorite(userid, props.pokemon.id);
+      };
+      deletFav();
     }
-
   };
-
-  
 
   return (
     <Card className={classes.root + " " + classes.steel}>
@@ -327,11 +317,11 @@ const handleTeamNameChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
                   </MenuItem>
                 </section>
               ) : (
-                  <MenuItem onClick={() => setCreateNewTeam(true)}>
-                    <FontAwesomeIcon icon="plus" style={{ width: 42 }} />
+                <MenuItem onClick={() => setCreateNewTeam(true)}>
+                  <FontAwesomeIcon icon="plus" style={{ width: 42 }} />
                   new team
-                  </MenuItem>
-                )}
+                </MenuItem>
+              )}
             </Menu>
             <div onClick={props.trigger}>
               <Like liked={liked} onClick={handleLikeClick} />
@@ -340,7 +330,5 @@ const handleTeamNameChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
         </div>
       </CardContent>
     </Card>
-  )
-
-
+  );
 };

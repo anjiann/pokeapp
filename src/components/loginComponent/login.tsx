@@ -15,61 +15,49 @@ import { toast } from 'react-toastify';
 import { Redirect, useHistory } from "react-router-dom";
 import { getUserById } from '../../services/userService';
 
-
-const useStyles=makeStyles((theme)=>({
-  paper:{
-    marginTop:theme.spacing(8),
-    display:'flex',
-    flexDirection:'column',
-    alignItem:'center,',
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItem: "center,",
   },
-  avatar:{
-    margin:theme.spacing(1),
-    backgroundColor:theme.palette.secondary.main,
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
   },
-  form:{
-    width:'100%',
-    marginTop:theme.spacing(1),
+  form: {
+    width: "100%",
+    marginTop: theme.spacing(1),
   },
-  submit:{
-    margin:theme.spacing(3,0,2),
+  submit: {
+    margin: theme.spacing(3, 0, 2),
   },
 }));
-/*
-interface ILoginProps{
-  uCurrentUser: (u:User) => void
-  currentUser: {}
-}*/
 
 const Login: React.FunctionComponent<any> = (props) => {
- // const [currentUser,updateCurrentUser] = useState({userId:1, userName:'name', userPassword:'password', userFirstName:'name', userLastName:'name',userFavorites:[],userTeams:[]})
-  const [userName,changeUsername]=useState("")
-  const [userPassword, changePassword]=useState("")
+  const [userName, changeUsername] = useState("");
+  const [userPassword, changePassword] = useState("");
   const classes = useStyles();
-  const history=useHistory();
+  const history = useHistory();
 
-  const handleUsernameChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
-    changeUsername(e.target.value)
-  }
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    changeUsername(e.target.value);
+  };
 
-  const handlePasswordChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
-    changePassword(e.target.value)
-  }
-
-  const submitLogin=async (e:SyntheticEvent)=>{
-    e.preventDefault()
-    try{
-     let user=await login(userName,userPassword)
-   //  getUserById(1)
-   //  console.log(user)
-    history.push("/");
-    
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    changePassword(e.target.value);
+  };
+  const submitLogin = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    try {
+      await login(userName, userPassword);
+      history.push("/");
+    } catch (error) {
+      changePassword("");
+      console.log(error);
     }
-    catch(error){
-      changePassword("")
-     console.log(error)
-    }
-  }
+  };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -91,7 +79,8 @@ const Login: React.FunctionComponent<any> = (props) => {
             name="email"
             autoComplete="off"
             autoFocus
-            value={userName} onChange={handleUsernameChange}
+            value={userName}
+            onChange={handleUsernameChange}
           />
           <TextField
             variant="outlined"
@@ -103,7 +92,8 @@ const Login: React.FunctionComponent<any> = (props) => {
             type="password"
             id="password"
             autoComplete="current-password"
-            value={userPassword} onChange={handlePasswordChange}
+            value={userPassword}
+            onChange={handlePasswordChange}
           />
           <Button
             type="submit"
@@ -125,6 +115,6 @@ const Login: React.FunctionComponent<any> = (props) => {
       </div>
     </Container>
   );
-}
+};
 
 export default Login;

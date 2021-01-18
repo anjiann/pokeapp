@@ -1,10 +1,6 @@
-import clsx from "clsx";
-import {
-  createStyles,
-  makeStyles,
-  useTheme,
-  Theme,
-} from "@material-ui/core/styles";
+import React from "react";
+import { Link } from "react-router-dom";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
@@ -16,29 +12,45 @@ import ListItemText from "@material-ui/core/ListItemText";
 import SportsEsportsTwoToneIcon from "@material-ui/icons/SportsEsportsTwoTone";
 import FavoriteTwoToneIcon from "@material-ui/icons/FavoriteTwoTone";
 import PeopleOutlineTwoToneIcon from "@material-ui/icons/PeopleOutlineTwoTone";
-const drawerWidth = 200;
+
+const drawerWidth = 175;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
     },
+    menuButton: {
+      marginRight: 36,
+    },
+    hide: {
+      display: "none",
+    },
     drawer: {
-      zIndex: -1,
       width: drawerWidth,
       flexShrink: 0,
+      whiteSpace: "nowrap",
     },
-    drawerPaper: {
-      width: drawerWidth,
+    toolbar: {
+      zIndex: -1,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      padding: theme.spacing(0, 1),
+      // necessary for content to be below app bar
+      ...theme.mixins.toolbar,
     },
     content: {
       flexGrow: 1,
       padding: theme.spacing(3),
     },
+    drawerPaper: {
+      width: drawerWidth,
+    },
   })
 );
 
-const SideBar: React.FunctionComponent<any> = () => {
+export default function MiniDrawer() {
   const classes = useStyles();
 
   const renderSwitch = (index: number): any => {
@@ -65,10 +77,14 @@ const SideBar: React.FunctionComponent<any> = () => {
         <Divider />
 
         <List>
-          {["Favourites", "Teams", "Game"].map((text, index) => (
-            <ListItem button key={text}>
+          {[
+            ["Favourites", "/fav"],
+            ["Teams", "/teams"],
+            ["Game", "/game"],
+          ].map((el, index) => (
+            <ListItem button key={el[0]} component={Link} to={el[1]}>
               <ListItemIcon>{renderSwitch(index)}</ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={el[0]} />
             </ListItem>
           ))}
         </List>
@@ -78,5 +94,4 @@ const SideBar: React.FunctionComponent<any> = () => {
       </main>
     </div>
   );
-};
-export default SideBar;
+}
