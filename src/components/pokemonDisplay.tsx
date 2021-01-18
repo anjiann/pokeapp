@@ -14,13 +14,13 @@ import {
   Typography,
 } from "@material-ui/core";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pokemon, PokemonType } from "../models/Pokemon";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Like from "./common/like";
 
-import { deletePokeFromFavorite } from "../services/pokemonServices";
+import { addFav, deletePokeFromFavorite, getfavList } from "../services/pokemonServices";
 import { Favorites } from "../models/User";
 
 const types = {
@@ -104,16 +104,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IPokemonDisplayProps {
-  pokemon: Pokemon;
-  favorite?: Favorites;
+  pokemon: Pokemon
+  favorite?: Favorites
+  isfavorite?: Boolean
+  trigger?: any
+
 }
+
 
 export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
   props
 ) => {
+
+  var user = JSON.parse(localStorage.getItem('userKey')!);
+  const userid = user.userId;
+
   const [liked, setLiked] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [createNewTeam, setCreateNewTeam] = React.useState<boolean>(false);
+  const [favotiteList, changeFavoriteList] = useState<Favorites[]>([])
   const classes = useStyles();
 
   const dummyTeamsData = [
@@ -121,6 +130,25 @@ export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
     { name: "team 2" },
     { name: "team 3" },
   ];
+
+  useEffect(() => {
+    if (props.isfavorite) {
+      setLiked(!liked);
+    }
+
+    let getFavList = async () => {
+
+      changeFavoriteList(await getfavList(userid))
+    }
+    getFavList()
+
+
+
+
+  }, [])
+
+  console.log(favotiteList)
+
   const handlePlusClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     setCreateNewTeam(false);
@@ -130,9 +158,43 @@ export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
     setAnchorEl(null);
   };
 
+
+
+
+
   const handleLikeClick = () => {
-    setLiked(!liked);
+
+
+
+    setLiked(!liked)
+
+    console.log(liked)
+    if (!liked) {
+
+      let getFavList = async () => {
+
+        await addFav(userid, props.pokemon.id)
+      }
+      getFavList()
+    }
+    else if (liked) {
+      console.log("i am deleting")
+
+      let deletFav = async () => {
+
+        deletePokeFromFavorite(userid, props.pokemon.id)
+      }
+      deletFav()
+    }
+
   };
+
+
+
+
+
+
+
   return (
     <Card className={classes.root + " " + classes.steel}>
       <CardMedia
@@ -227,16 +289,20 @@ export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
                   </MenuItem>
                 </section>
               ) : (
-                <MenuItem onClick={() => setCreateNewTeam(true)}>
-                  <FontAwesomeIcon icon="plus" style={{ width: 42 }} />
+                  <MenuItem onClick={() => setCreateNewTeam(true)}>
+                    <FontAwesomeIcon icon="plus" style={{ width: 42 }} />
                   new team
-                </MenuItem>
-              )}
+                  </MenuItem>
+                )}
             </Menu>
-            <Like liked={liked} onClick={handleLikeClick} />
+            <div onClick={props.trigger}>
+              <Like liked={liked} onClick={handleLikeClick} />
+            </div>
           </div>
         </div>
       </CardContent>
     </Card>
-  );
+  )
+
+
 };

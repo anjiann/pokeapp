@@ -1,6 +1,6 @@
 body {
   padding-top: 60px;
-  background-color: black;
+  background-color: rgb(241, 236, 236);
 }
 @media (max-width: 979px) {
   body {

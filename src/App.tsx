@@ -48,7 +48,9 @@ function App() {
         <Switch>
           <Route path="/login" component={Login}></Route>
 
-          <Route path="/fav" component={FavoritesList}></Route>
+          <Route path="/fav"
+            render={() => <FavoritesList pokemons={pokemons} />}
+          ></Route>
           <Route path="/teams" component={Team}></Route>
           <Route path="/register" component={Register} />
           {/* <ProtectedRoute
