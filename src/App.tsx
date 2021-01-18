@@ -23,6 +23,8 @@ import FavoritesList from "./components/favoriteslist";
 import Team from "./components/team";
 import { Pokemon } from "./models/Pokemon";
 import { getPokemons } from "./services/pokeServices/pokemonService";
+import { Game } from "./components/game";
+
 
 library.add(fas, faPlus, faHeart);
 
@@ -65,6 +67,9 @@ function App() {
             path="/pokemons"
             render={() => <Pokedex pokemons={pokemons} />}
           />
+          <Route
+            path ="/game"
+            render={()=> <Game pokemons={pokemons}/>}/>
           <Route path="/not-found" component={NotFound} />
           <Redirect exact from="/" to="/pokemons" />
           <Redirect to="/not-found" />
