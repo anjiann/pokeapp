@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -29,6 +29,8 @@ const useStyles = makeStyles((theme: Theme) =>
 const Navbar: React.FunctionComponent<any> = () => {
   const classes = useStyles();
   const currUser = authService.getCurrentUser();
+  
+  
 
   return (
     <div className={classes.root}>
@@ -51,20 +53,20 @@ const Navbar: React.FunctionComponent<any> = () => {
           <Typography variant="h6" className={classes.title}>
             Home
           </Typography>
-          {currUser ? (
+        
             <div>
-              <Button color="inherit" component={Link} to="/login">
-                Login
-              </Button>
-              <Button color="inherit" component={Link} to="/register">
-                Register
-              </Button>
-            </div>
-          ) : (
+            <Button color="inherit" component={Link} to="/login">
+              Login
+            </Button>
+            <Button color="inherit" component={Link} to="/register">
+              Register
+            </Button>
+          </div>
+           
             <Button color="inherit" component={Link} to="/logout">
               Logout
             </Button>
-          )}
+        
         </Toolbar>
       </AppBar>
     </div>

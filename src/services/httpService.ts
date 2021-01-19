@@ -20,7 +20,7 @@ axios.interceptors.response.use(
   }
 );
 
-export const dbApi = axios.create({ baseURL: process.env.REACT_APP_API_URL });
+export const dbApi = axios.create({ baseURL: "http://localhost:10000" });
 export const pokeApi = axios.create({
   baseURL: "https://pokeapi.co/api/v2",
 });

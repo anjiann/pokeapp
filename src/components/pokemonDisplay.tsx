@@ -141,11 +141,17 @@ export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
   const handleTeamNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTeamName(e.target.value);
   };
+
+
+ 
+
+
   useEffect(() => {
     if (props.isfavorite) {
       setLiked(!liked);
     }
 
+   if(userid !== null) {
     let getFavList = async () => {
       changeFavoritesList(await getfavList(userid));
     };
@@ -155,8 +161,10 @@ export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
       let userTeamInfo = await getUserById(userid);
       setTeamList(userTeamInfo.userTeams);
     };
+
     getTeams();
 
+  }
     setRefresh(false);
   }, [refresh]);
 
