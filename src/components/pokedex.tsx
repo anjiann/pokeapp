@@ -73,34 +73,23 @@ const Pokedex: React.FunctionComponent<IPokedex> = ({ pokemons }) => {
     setCurrentPage(1);
   };
 
-  // this is new search function  ------------------------------  
+  // this is new search function  ------------------------------
 
   const getPageData = (): any => {
     let filtered = pokemons;
     if (selectedCategory && selectedFilter && selectedFilter._id) {
       switch (selectedCategory.name) {
-        case "generataion":
+        case "generation":
           break;
         case "type":
           filtered = pokemons.filter(
             (p) =>
               p.type[0] == selectedFilter.name ||
               p.type[1] == selectedFilter.name
-
-          )
-          if (searchQuery) {
-            filtered = filtered.filter((p) =>
-              p.name.toLowerCase().startsWith(searchQuery.toLowerCase())
-            );
-          }
+          );
           break;
       }
     }
-    else {
-      filtered = pokemons.filter((p) =>
-        p.name.toLowerCase().startsWith(searchQuery.toLowerCase()))
-    }
-
 
     if (searchQuery) {
       filtered = filtered.filter((p) =>
@@ -111,41 +100,7 @@ const Pokedex: React.FunctionComponent<IPokedex> = ({ pokemons }) => {
     const currPagePokemons = paginate(filtered, currentPage, pageSize);
 
     return { totalCount: filtered.length, currPagePokemons };
-
-  }
-  /*----------------------------------------------------------
-  this is old cod if you want ot remove it you can remove it 
-  
-  */
-
-  /*-------------------------------------------------------------*/
-  /*
-    const getPageData = (): any => {
-      let filtered = pokemons;
-      if (searchQuery) {
-        filtered = pokemons.filter((p) =>
-          p.name.toLowerCase().startsWith(searchQuery.toLowerCase())
-        );
-      } else if (selectedCategory && selectedFilter && selectedFilter._id) {
-        switch (selectedCategory.name) {
-          case "generation":
-            break;
-          case "type":
-            filtered = pokemons.filter(
-              (p) =>
-                p.type[0] == selectedFilter.name ||
-                p.type[1] == selectedFilter.name
-            );
-            break;
-        }
-      }
-      
-  
-      const currPagePokemons = paginate(filtered, currentPage, pageSize);
-  
-      return { totalCount: filtered.length, currPagePokemons };
-    };
-    */
+  };
   const { totalCount, currPagePokemons } = getPageData();
 
   return (
@@ -154,7 +109,6 @@ const Pokedex: React.FunctionComponent<IPokedex> = ({ pokemons }) => {
         <SideBar />
       </div>
       <div className="col-2" style={{ marginTop: "2vw" }}>
-
         {/* <ListGroup
           items={categories}2
           selectedItem={selectedCaqtegory}

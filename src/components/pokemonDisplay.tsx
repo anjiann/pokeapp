@@ -20,8 +20,14 @@ import { Pokemon, PokemonType } from "../models/Pokemon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Like from "./common/like";
 
-
-import { addFav, addPokeToTeam, createTeam, deletePokeFromFavorite, getfavList, getTeamById } from "../services/pokemonServices";
+import {
+  addFav,
+  addPokeToTeam,
+  createTeam,
+  deletePokeFromFavorite,
+  getfavList,
+  getTeamById,
+} from "../services/pokemonServices";
 import { Favorites, Teams } from "../models/User";
 import { getUserById } from "../services/userService";
 import { userInfo } from "os";
@@ -124,65 +130,56 @@ export const PokemonDisplay: React.FunctionComponent<IPokemonDisplayProps> = (
   const [createNewTeam, setCreateNewTeam] = React.useState<boolean>(false);
   const [favoritesList, changeFavoritesList] = useState<Favorites[]>([]);
   const classes = useStyles();
-  const[teamList, setTeamList]=useState<Teams[]>([])
-  const[teamName,setTeamName]=useState("")
-  const[refresh, setRefresh]=useState(false);
-  const[teamId, setTeam]=useState("");
-  const[checked,setChecked]=useState<boolean>(false)
-  const handleTeamId=(e:React.ChangeEvent<HTMLInputElement>)=>{
-    setTeam(e.target.value)
-  }
-const handleTeamNameChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
-  setTeamName(e.target.value)
-}
+  const [teamList, setTeamList] = useState<Teams[]>([]);
+  const [teamName, setTeamName] = useState("");
+  const [refresh, setRefresh] = useState(false);
+  const [teamId, setTeam] = useState("");
+  const [checked, setChecked] = useState<boolean>(false);
+  const handleTeamId = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTeam(e.target.value);
+  };
+  const handleTeamNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTeamName(e.target.value);
+  };
   useEffect(() => {
     if (props.isfavorite) {
       setLiked(!liked);
     }
 
     let getFavList = async () => {
+      changeFavoritesList(await getfavList(userid));
+    };
+    getFavList();
 
+    let getTeams = async () => {
+      let userTeamInfo = await getUserById(userid);
+      setTeamList(userTeamInfo.userTeams);
+    };
+    getTeams();
 
-      changeFavoriteList(await getfavList(userid))
-    }
-    getFavList()
+    setRefresh(false);
+  }, [refresh]);
 
-    let getTeams=async()=>{
-      let userTeamInfo=(await getUserById(userid))
-      setTeamList(userTeamInfo.userTeams)
-    }
-    getTeams()
-    
-  
-    setRefresh(false)
-
-  }, [refresh])
-
-
-  const addPokemon=async()=>{
-    try{
-     addPokeToTeam(teamId,props.pokemon.id)
-        }catch(e){
-  console.log(e)
-                  }
-  }
-
-
-  const submitTeam=async(e:SyntheticEvent)=>{
-    e.preventDefault()
-    try{
-   var data={
-     'userId':userid,
-     'teamName':teamName
-   }
-   createTeam(data)
-    }catch(e){
+  const addPokemon = async () => {
+    try {
+      addPokeToTeam(teamId, props.pokemon.id);
+    } catch (e) {
       console.log(e);
     }
-  }
+  };
 
-
-  console.log(favotiteList)
+  const submitTeam = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    try {
+      var data = {
+        userId: userid,
+        teamName: teamName,
+      };
+      createTeam(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const handlePlusClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -281,15 +278,15 @@ const handleTeamNameChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
                 <MenuItem disableRipple key={team.teamid}>
                   <input
                     color="primary"
-                    type="radio" name="tName"
+                    type="radio"
+                    name="tName"
                     value={team.teamid}
                     key={team.teamid}
-                    checked={teamId===team.teamid.toString()}
+                    checked={teamId === team.teamid.toString()}
                     onChange={handleTeamId}
-                   
                   />
                   {team.teamName}
-                 </MenuItem>                   
+                </MenuItem>
               ))}
               <Button onClick={addPokemon}>Add pokemon</Button>
               <Divider />
@@ -301,13 +298,14 @@ const handleTeamNameChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
                       id="standard-required"
                       label="Name"
                       placeholder="Enter team name..."
-                      value={teamName} onChange={handleTeamNameChange}
+                      value={teamName}
+                      onChange={handleTeamNameChange}
                       style={{ marginLeft: 16, marginRight: 16 }}
                     />
                   </MenuItem>
                   <MenuItem disableRipple onClick={() => setRefresh(true)}>
                     <Button
-                    onClick={submitTeam}
+                      onClick={submitTeam}
                       variant="outlined"
                       color="primary"
                       className={"ml-auto"}

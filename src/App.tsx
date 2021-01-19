@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -27,9 +26,8 @@ import { getPokemons } from "./services/pokeServices/pokemonService";
 import { Game } from "./components/game";
 import Logout from "./components/logout";
 
-
 library.add(fas, faPlus, faHeart);
-export const PokemonContext=React.createContext<any>(undefined);
+export const PokemonContext = React.createContext<any>(undefined);
 export const UserContext = React.createContext<any>(undefined);
 function App() {
   const [user, changeUser] = useState<User>();
@@ -45,33 +43,31 @@ function App() {
 
   return (
     <UserContext.Provider value={user}>
-
- <PokemonContext.Provider value={pokemons}>
-      <Navbar />
-      <Router>
-        <Navbar />
-        <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/logout" component={Logout} />
-          <ProtectedRoute
-            path="/fav"
-            render={() => <FavoritesList pokemons={pokemons} />}
-          />
-          <ProtectedRoute path="/teams" component={Team} />
-          <Route path="/register" component={Register} />
-          <Route
-            path="/pokemons"
-            render={() => <Pokedex pokemons={pokemons} />}
-          />
-          <ProtectedRoute
-            path="/game"
-            render={() => <Game pokemons={pokemons} />}
-          />
-          <Route path="/not-found" component={NotFound} />
-          <Redirect exact from="/" to="/pokemons" />
-          <Redirect to="/not-found" />
-        </Switch>
-      </Router>
+      <PokemonContext.Provider value={pokemons}>
+        <Router>
+          <Navbar />
+          <Switch>
+            <Route path="/login" component={Login} />
+            <Route path="/logout" component={Logout} />
+            <ProtectedRoute
+              path="/fav"
+              render={() => <FavoritesList pokemons={pokemons} />}
+            />
+            <ProtectedRoute path="/teams" component={Team} />
+            <Route path="/register" component={Register} />
+            <Route
+              path="/pokemons"
+              render={() => <Pokedex pokemons={pokemons} />}
+            />
+            <ProtectedRoute
+              path="/game"
+              render={() => <Game pokemons={pokemons} />}
+            />
+            <Route path="/not-found" component={NotFound} />
+            <Redirect exact from="/" to="/pokemons" />
+            <Redirect to="/not-found" />
+          </Switch>
+        </Router>
       </PokemonContext.Provider>
     </UserContext.Provider>
   );
