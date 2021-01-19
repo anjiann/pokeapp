@@ -20,7 +20,7 @@ axios.interceptors.response.use(
   }
 );
 
-export const dbApi = axios.create({ baseURL: "http://localhost:10000" });
+export const dbApi = axios.create({ baseURL: "http://ec2-3-96-46-240.ca-central-1.compute.amazonaws.com:10000" });
 export const pokeApi = axios.create({
   baseURL: "https://pokeapi.co/api/v2",
 });
